@@ -1,0 +1,69 @@
+# Main experiment: common adaptive Co-PPO attacker against the five paper checkpoints.
+output_dir: ${CORL_EVAL_ROOT}/results/main/adaptive
+
+dataset:
+  parquet: ${CORL_TRAINING_ROOT}/training_data/agentdyn_official_overlap_eval.parquet
+  panel: ${CORL_EVAL_ROOT}/evaluation/agentdyn/panels/official1514_adaptive.jsonl
+
+settings:
+  benchmark_version: v1
+  task_catalog: v2_training
+  max_defender_turns: 20
+  max_attacker_turns: 0
+  max_tool_response_chars: 0
+  concurrency: 64
+  generation_seeds: [0]
+  trace_policy: failures
+
+defenders:
+  base: &defender
+    base_url: ${BASE_MODEL_URL}
+    model: base
+    protocol: text
+    temperature: 0.6
+    top_p: 1.0
+    max_tokens: 8192
+    training_chat_template: true
+    checkpoint: ${BASE_MODEL_PATH}
+
+  ppo:
+    <<: *defender
+    base_url: ${PPO_DEFENDER_URL}
+    model: ppo
+    checkpoint: ${PPO_DEFENDER_PATH}
+
+  nopop:
+    <<: *defender
+    base_url: ${NOPOP_DEFENDER_URL}
+    model: nopop
+    checkpoint: ${NOPOP_DEFENDER_PATH}
+
+  coppo:
+    <<: *defender
+    base_url: ${COPPO_DEFENDER_URL}
+    model: coppo
+    checkpoint: ${COPPO_DEFENDER_PATH}
+
+  corl:
+    <<: *defender
+    base_url: ${CORL_DEFENDER_URL}
+    model: corl
+    checkpoint: ${CORL_DEFENDER_PATH}
+
+attackers:
+  coppo_attacker:
+    base_url: ${COPPO_ATTACKER_URL}
+    model: coppo_attacker
+    protocol: text
+    temperature: 1.0
+    top_p: 1.0
+    max_tokens: 3072
+    training_chat_template: true
+    checkpoint: ${COPPO_ATTACKER_PATH}
+
+defender_benchmark:
+  defenders: [base, ppo, nopop, coppo, corl]
+  clean: false
+  dataset_static: false
+  fixed_templates: []
+  adaptive_attackers: [coppo_attacker]

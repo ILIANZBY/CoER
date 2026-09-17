@@ -1,0 +1,128 @@
+hydra:
+  searchpath:
+    - file://verl/trainer/config
+
+defaults:
+  - ppo_megatron_trainer
+  - _self_
+
+# ==================== Co-Training Config ====================
+cotrain:
+  attacker_model_path: "./sft_output/attacker_sft"
+  attacker_algorithm: ppo
+  defender_model_path: "./models/base-model"
+
+  # Disable this for the current-vs-current ablation. When false, the
+  # orchestrator creates no historical vLLM replicas or PopulationManager and
+  # both historical model-pair probabilities must be zero.
+  population_enabled: true
+
+  # Checkpoint directories (separate for attacker and defender)
+  attacker_ckpt_dir: null
+  defender_ckpt_dir: null
+
+  # Per-prompt model pair sampling probabilities
+  n_rollouts_per_prompt: 1
+  # These probabilities apply only to injected rows. Native clean parquet
+  # rows are routed to the clean defender branch by their metadata.
+  prob_curr_curr: 0.4
+  prob_old_atk_curr_def: 0.25
+  prob_curr_atk_old_def: 0.25
+  prob_fixed_template: 0.1
+  prob_clean: 0.0
+
+  # Old model refresh interval (in training steps)
+  old_model_refresh_interval: 20
+
+  # Elite population config
+  population_size: 4
+  population_update_interval: 20
+  # One provisional checkpoint is evaluated in a probation slot until it has
+  # at least this many valid samples in each of the required suite buckets.
+  population_min_eval_samples_per_bucket: 32
+  population_min_eval_buckets: 7
+  population_required_buckets: "slack,shopping,workspace,dailylife,banking,github,travel"
+  population_probation_sampling_prob: 0.75
+  population_state_dir: null
+  population_drain_timeout_s: 1800
+  population_random_seed: 0
+
+  # Old model vLLM config
+  old_attacker_tp: 2
+  old_defender_tp: 2
+  old_model_gpu_mem_util: 0.85
+  old_attacker_max_model_len: 57344
+  old_defender_max_model_len: 40960
+
+  # Current model vLLM config (fallback if LLMServerManager URLs unavailable)
+  current_attacker_base_port: 8000
+  current_attacker_replicas: 2
+  current_defender_base_port: 8010
+  current_defender_replicas: 4
+
+  # Rollout GPU allocation per model group
+  current_attacker_rollout_nnodes: 1
+  current_attacker_rollout_gpus_per_node: 4
+  current_defender_rollout_nnodes: 1
+  current_defender_rollout_gpus_per_node: 8
+  old_attacker_rollout_nnodes: 1
+  old_attacker_rollout_gpus_per_node: 8
+  old_defender_rollout_nnodes: 1
+  old_defender_rollout_gpus_per_node: 8
+
+  # Per-trainer overrides
+  attacker_lr: 5e-7
+  defender_lr: 5e-7
+  attacker_max_prompt_length: 8192
+  attacker_max_response_length: 49152
+  defender_max_prompt_length: 15360
+  defender_max_response_length: 16384
+  attacker_cp: 1
+  defender_cp: 4
+  attacker_exp_name: "cotrain_attacker_ppo"
+  defender_exp_name: "cotrain_defender_ppo"
+
+# ==================== Async Training Config ====================
+async_training:
+  staleness_threshold: 0.5
+  trigger_parameter_sync_step: 4
+  require_batches: 1
+  partial_rollout: True
+  use_trainer_do_validate: False
+
+# ==================== Rollout Config ====================
+rollout:
+  nnodes: 4
+  n_gpus_per_node: 8
+  n: 1
+  total_rollout_steps: null
+
+# ==================== Data Config ====================
+data:
+  gen_batch_size: 1
+
+# ==================== Actor/Rollout/Ref Config ====================
+actor_rollout_ref:
+  rollout:
+    calculate_log_probs: True
+    checkpoint_engine:
+      backend: "nccl"
+
+  actor:
+    use_rollout_log_probs: True
+    optim:
+      total_training_steps: 10000
+
+  model:
+    use_remove_padding: True
+
+# ==================== Algorithm ====================
+algorithm:
+  rollout_correction:
+    bypass_mode: True
+
+# ==================== Critic ====================
+critic:
+  enable: True
+  optim:
+    total_training_steps: 10000

@@ -1,0 +1,9 @@
+# Canonical adaptive adversarial co-evolution agent loop.
+# One environment trajectory can contain several sequential attacker actions.
+- name: adv_evo_adversarial
+  _target_: cotrain.adv_evo_agent_loop.AdvEvoAgentLoop
+  max_defender_turns: 20
+  # Match the SFT generator: attack every available injection point until an
+  # early security success or the defender trajectory ends. Zero means there
+  # is no separate attacker-turn cap; exact context limits still fail closed.
+  max_attacker_turns: 0
