@@ -4,7 +4,9 @@
 
 ### Defending against Adaptive Indirect Prompt Injection via Adversarial Co-Evolution and Refinement
 
-Anonymous research code accompanying the ICLR 2027 submission.
+Research code accompanying the [CoER preprint](https://arxiv.org/abs/2609.07529).
+
+This identity-linked public-release repository is separate from the anonymous review archive. Do not use it as an anonymous-reviewer link.
 
 [Method](#method) · [Results](#results) · [Models and datasets](#models-and-datasets) · [Getting started](#getting-started) · [Training](training/README.md) · [Evaluation](corl-evaluation/README.md)
 
@@ -86,15 +88,15 @@ These are separate cross-protocol and cross-benchmark results, not evidence of s
 
 ## Models and datasets
 
-Hugging Face destinations are pending account confirmation, privacy/safety review and release authorization. No public download is claimed yet; model weights and generated training corpora are not bundled in the source repository.
+Availability checked on **2026-09-18**: the three datasets have been uploaded and verified in owner-controlled private Hugging Face repositories. Model transfer is incomplete and is being retried after a network failure. Public redistribution permission for model lineage and teacher-generated data remains under review. Weights and training corpora are not bundled here.
 
 | Planned artifact | Paper scope | Availability |
 |---|---|---|
-| Attacker model | Retained Co-PPO attacker (local a200 candidate) | Local checkpoint; upload pending |
-| Defender model | Co-PPO d430 → Defender-SFT update 360 | Local checkpoint; upload pending |
-| Attacker SFT dataset | 3,995 conversations; 11,655 supervised attacker turns | Original corpus retrieval and review pending |
-| Defender SFT dataset | 5,760 trajectories: 4,907 attacked + 853 untriggered replay | Original corpus retrieval and review pending |
-| RL dataset | 12,705 training rows + 3,186 disjoint internal-validation rows | Original corpus retrieval and review pending |
+| Attacker model | Retained Co-PPO attacker (local a200 candidate) | Upload incomplete; not downloadable |
+| Defender model | Co-PPO d430 → Defender-SFT update 360 | Upload pending; not downloadable |
+| Attacker SFT dataset | 3,995 conversations; 11,655 supervised attacker turns | [Uploaded and verified; private](https://huggingface.co/datasets/Z-Edgar/CoER-Attacker-SFT) |
+| Defender SFT dataset | 5,760 trajectories: 4,907 attacked + 853 untriggered replay | [Uploaded and verified; private](https://huggingface.co/datasets/Z-Edgar/CoER-Defender-SFT) |
+| RL dataset | 12,705 training rows + 3,186 disjoint internal-validation rows | [Uploaded and verified; private](https://huggingface.co/datasets/Z-Edgar/CoER-RL) |
 
 The RL dataset keeps training and validation as separate splits. These are executable task configurations, not the official evaluation panel or a dump of rollout logs. Expected paper counts do not substitute for inspecting the original files. See the [publication plan](docs/publishing.md) before distributing any artifact.
 
