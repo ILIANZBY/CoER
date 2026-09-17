@@ -98,7 +98,7 @@ Availability checked on **2026-09-18**: the three datasets have been uploaded an
 | Defender SFT dataset | 5,760 trajectories: 4,907 attacked + 853 untriggered replay | [Uploaded and verified; private](https://huggingface.co/datasets/Z-Edgar/CoER-Defender-SFT) |
 | RL dataset | 12,705 training rows + 3,186 disjoint internal-validation rows | [Uploaded and verified; private](https://huggingface.co/datasets/Z-Edgar/CoER-RL) |
 
-The RL dataset keeps training and validation as separate splits. These are executable task configurations, not the official evaluation panel or a dump of rollout logs. Expected paper counts do not substitute for inspecting the original files. See the [publication plan](docs/publishing.md) before distributing any artifact.
+The RL dataset keeps training and validation as separate splits. These are executable task configurations, not the official evaluation panel or a dump of rollout logs. Expected paper counts do not substitute for inspecting the original files. Dataset and model redistribution remains subject to the applicable source permissions.
 
 ## Getting started
 
@@ -154,11 +154,11 @@ docs/assets/paper/  Original paper figures, independent of the source PDF
 scripts/           Utilities, including anonymous source export
 ```
 
-## Anonymous release and responsible use
+## Release and responsible use
 
-See the [anonymous release checklist](docs/anonymous_release.md) and [GitHub / Hugging Face publication plan](docs/publishing.md). The source exporter omits Git history, local tooling configuration, paper source files, credentials, logs, checkpoints and generated trajectories. Required upstream licenses and notices remain intact; upstream attribution does not identify this submission's authors.
+This source snapshot omits the working repository's history, local tooling configuration, paper source files, credentials, logs, checkpoints and generated trajectories. Upstream licenses and notices remain intact. The identity-linked project page and repository must not be used as anonymous reviewer links.
 
-This is dual-use security research for controlled evaluation and defense development. Run attacks only in authorized, isolated environments; review datasets and logs before release. Citation metadata and author/project links are deferred until after anonymous review.
+This is dual-use security research for controlled evaluation and defense development. Run attacks only in authorized, isolated environments; review datasets and logs before release.
 
 ## License
 
