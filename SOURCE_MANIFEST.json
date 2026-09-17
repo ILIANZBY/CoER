@@ -754,7 +754,9 @@
     "verl/workers/utils/padding.py": "a10d3fb1e6a2c6ac00c495564a7ed3ba79d8e44f367c5b86453df8313730c5e9",
     "vllm_serve_patched.py": "11f07a9805a2849c5e81356c72151120fa5de5353d53c317df93ff50d7e93421"
   },
-  "kind": "anonymous-source-only",
+  "kind": "historical-anonymous-source-snapshot",
+  "snapshot_commit": "aaf259a601fc850f339cb5e169b42e072f36dd23",
+  "scope_note": "Hashes describe the original source import, before subsequent public README and project-page changes. They are not a manifest of the current checkout.",
   "manual_review_required": true,
   "raw_results_included": false,
   "schema_version": 1

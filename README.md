@@ -6,6 +6,8 @@
 
 Research code accompanying the [CoER preprint](https://arxiv.org/abs/2609.07529).
 
+[Project page](https://ilianzby.github.io/CoER/) · [Paper](https://arxiv.org/pdf/2609.07529)
+
 This identity-linked public-release repository is separate from the anonymous review archive. Do not use it as an anonymous-reviewer link.
 
 [Method](#method) · [Results](#results) · [Models and datasets](#models-and-datasets) · [Getting started](#getting-started) · [Training](training/README.md) · [Evaluation](corl-evaluation/README.md)
@@ -88,15 +90,15 @@ These are separate cross-protocol and cross-benchmark results, not evidence of s
 
 ## Models and datasets
 
-Availability checked on **2026-09-18**: the three datasets have been uploaded and verified in owner-controlled private Hugging Face repositories. Model transfer is incomplete and is being retried after a network failure. Public redistribution permission for model lineage and teacher-generated data remains under review. Weights and training corpora are not bundled here.
+Availability checked on **2026-09-18**: the code and three verified datasets are public. Both model repositories are public, but checkpoint transfer is still incomplete; they are not yet usable model downloads. Weights and training corpora are not bundled here. Public access does not add a license beyond the applicable source terms.
 
 | Planned artifact | Paper scope | Availability |
 |---|---|---|
-| Attacker model | Retained Co-PPO attacker (local a200 candidate) | Upload incomplete; not downloadable |
-| Defender model | Co-PPO d430 → Defender-SFT update 360 | Upload pending; not downloadable |
-| Attacker SFT dataset | 3,995 conversations; 11,655 supervised attacker turns | [Uploaded and verified; private](https://huggingface.co/datasets/Z-Edgar/CoER-Attacker-SFT) |
-| Defender SFT dataset | 5,760 trajectories: 4,907 attacked + 853 untriggered replay | [Uploaded and verified; private](https://huggingface.co/datasets/Z-Edgar/CoER-Defender-SFT) |
-| RL dataset | 12,705 training rows + 3,186 disjoint internal-validation rows | [Uploaded and verified; private](https://huggingface.co/datasets/Z-Edgar/CoER-RL) |
+| Attacker model | Retained Co-PPO attacker (local a200 candidate) | [Public repository; weights pending](https://huggingface.co/Z-Edgar/CoER-Attacker) |
+| Defender model | Co-PPO d430 → Defender-SFT update 360 | [Public repository; weights pending](https://huggingface.co/Z-Edgar/CoER-Defender) |
+| Attacker SFT dataset | 3,995 conversations; 11,655 supervised attacker turns | [Public; verified](https://huggingface.co/datasets/Z-Edgar/CoER-Attacker-SFT) |
+| Defender SFT dataset | 5,760 trajectories: 4,907 attacked + 853 untriggered replay | [Public; verified](https://huggingface.co/datasets/Z-Edgar/CoER-Defender-SFT) |
+| RL dataset | 12,705 training rows + 3,186 disjoint internal-validation rows | [Public; verified](https://huggingface.co/datasets/Z-Edgar/CoER-RL) |
 
 The RL dataset keeps training and validation as separate splits. These are executable task configurations, not the official evaluation panel or a dump of rollout logs. Expected paper counts do not substitute for inspecting the original files. Dataset and model redistribution remains subject to the applicable source permissions.
 
