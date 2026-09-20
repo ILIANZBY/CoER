@@ -6,9 +6,7 @@
 
 Research code accompanying the [CoER preprint](https://arxiv.org/abs/2609.07529).
 
-[Project page](https://ilianzby.github.io/CoER/) · [Paper](https://arxiv.org/pdf/2609.07529)
-
-This identity-linked public-release repository is separate from the anonymous review archive. Do not use it as an anonymous-reviewer link.
+[Project page](https://ilianzby.github.io/CoER/) · [Paper](https://arxiv.org/pdf/2609.07529) · [Attacker](https://huggingface.co/Z-Edgar/CoER-Attacker) · [Defender](https://huggingface.co/Z-Edgar/CoER-Defender) · [Training data](#models-and-datasets)
 
 [Method](#method) · [Results](#results) · [Models and datasets](#models-and-datasets) · [Getting started](#getting-started) · [Training](training/README.md) · [Evaluation](corl-evaluation/README.md)
 
@@ -20,7 +18,7 @@ On the main seven-suite evaluation, overall ASR decreases from **38.45% to 0.22%
 
 ![The paper's three-stage CoER framework](docs/assets/paper/figure2-corl-framework.png)
 
-*Figure 2 from the paper. Historical opponent sampling and population refresh belong inside Co-PPO, not a separate stage. Online RL ends before Defender SFT.*
+*Updated Figure 2 from the paper. Current policies learn against a mixture of current opponents and frozen historical snapshots. Evaluated snapshots refresh the pools; retained attackers then guide verified Defender SFT.*
 
 ## Method
 
@@ -42,7 +40,7 @@ Defender SFT executes teachers from **task initial states**, not resumed failure
 
 ## Results
 
-Aligned with the manuscript revision supplied on **2026-09-17**. These numbers are transcribed from the paper, **not recomputed from a bundled raw-results release**. All values are percentages. Utility (U) measures task success; ASR measures attack success; Safe-U requires task success without compromise. Overall U/Safe-U pool all 1,512 eligible conditions; overall ASR uses only the 1,355 attacked executions.
+Aligned with the manuscript revision supplied on **2026-09-20**. Results below are paper-reported, not a new evaluation of the uploaded checkpoints. All values are percentages. Utility (U) measures task success; ASR measures attack success; Safe-U requires task success without compromise. Overall U/Safe-U pool all 1,512 eligible conditions; overall ASR uses only the 1,355 attacked executions.
 
 ### Main experiment
 
@@ -81,21 +79,21 @@ The common-attacker panel has 1,514 raw configurations and 1,512 metric-eligible
 | InjecAgent defender | Base payload ASR ↓ | Successes / denominator | Enhanced payload ASR ↓ | Successes / denominator |
 |---|---:|---:|---:|---:|
 | Base | 7.49 | 77/1,028 | 22.69 | 221/974 |
-| Co-PPO | 4.40 | Not supplied | 17.30 | Not supplied |
+| Co-PPO | 4.34 | 45/1,037 | 17.35 | 181/1,043 |
 | CoER | 0.00 | 0/1,043 | 1.97 | 20/1,016 |
 
-*Paper Appendix Table 13 (Table 2 rounds to one decimal). Supplied denominators differ from the nominal 1,054 cases; the scope of excluded cases remains unverified. Do not combine these updated aggregates with the earlier DH/DS subtype summaries, infer missing counts, or treat InjecAgent ASR as task utility.*
+*Paper Appendix Table 13 (Table 2 rounds to one decimal). Each cell uses its reported eligible denominator, not the nominal 1,054 cases. InjecAgent measures attack success, not task utility; its payload settings are separate from the main evaluation.*
 
 These are separate cross-protocol and cross-benchmark results, not evidence of strict domain-, injection- or payload-OOD generalization. CoER's historical-union ASR rises to **4.97%** with four retained attackers and two attempts each; these are not freshly optimized best responses. The paper reports one training run, and comparisons do not establish training-seed significance.
 
 ## Models and datasets
 
-Availability checked on **2026-09-18**: the code and three verified datasets are public. Both model repositories are public, but checkpoint transfer is still incomplete; they are not yet usable model downloads. Weights and training corpora are not bundled here. Public access does not add a license beyond the applicable source terms.
+The code, **two model checkpoints** and **three training datasets** are public. Both model uploads are complete: all 66 attacker shards and 70 defender shards match their upload manifests, with configuration, tokenizer and weight-index files present. File verification does not replace a GPU inference test. Weights and training corpora are hosted separately on Hugging Face; applicable source terms still apply.
 
-| Planned artifact | Paper scope | Availability |
+| Artifact | Paper scope | Download |
 |---|---|---|
-| Attacker model | Retained Co-PPO attacker (local a200 candidate) | [Public repository; weights pending](https://huggingface.co/Z-Edgar/CoER-Attacker) |
-| Defender model | Co-PPO d430 → Defender-SFT update 360 | [Public repository; weights pending](https://huggingface.co/Z-Edgar/CoER-Defender) |
+| Attacker model | Retained Co-PPO attacker (a200) | [Hugging Face](https://huggingface.co/Z-Edgar/CoER-Attacker) |
+| Defender model | Co-PPO d430 → Defender-SFT update 360 | [Hugging Face](https://huggingface.co/Z-Edgar/CoER-Defender) |
 | Attacker SFT dataset | 3,995 conversations; 11,655 supervised attacker turns | [Public; verified](https://huggingface.co/datasets/Z-Edgar/CoER-Attacker-SFT) |
 | Defender SFT dataset | 5,760 trajectories: 4,907 attacked + 853 untriggered replay | [Public; verified](https://huggingface.co/datasets/Z-Edgar/CoER-Defender-SFT) |
 | RL dataset | 12,705 training rows + 3,186 disjoint internal-validation rows | [Public; verified](https://huggingface.co/datasets/Z-Edgar/CoER-RL) |
